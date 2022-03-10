@@ -69,6 +69,14 @@
         "command": "tsc -b",
         "cwd": "apps/card-game-app-e2e"
       }
+    },
+    "pod-install": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "pod install",
+        "cwd": "apps/card-game-app/ios"
+      }
     }
   },
   "tags": [],
