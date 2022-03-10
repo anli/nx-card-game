@@ -21,7 +21,9 @@
     },
     "bundle-ios": {
       "executor": "@nrwl/react-native:bundle",
-      "outputs": ["apps/card-game-app/build"],
+      "outputs": [
+        "apps/card-game-app/build"
+      ],
       "options": {
         "entryFile": "apps/card-game-app/src/main.tsx",
         "platform": "ios",
@@ -58,17 +60,29 @@
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
-        "lintFilePatterns": ["apps/card-game-app/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": [
+          "apps/card-game-app/**/*.{ts,tsx,js,jsx}"
+        ]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/card-game-app"],
+      "outputs": [
+        "coverage/apps/card-game-app"
+      ],
       "options": {
+        "coverageDirectory": "coverage/apps-card-game-app",
         "jestConfig": "apps/card-game-app/jest.config.js",
         "passWithNoTests": true
+      },
+      "configurations": {
+        "coverage": {
+          "codeCoverage": true
+        }
       }
     }
   },
