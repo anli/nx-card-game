@@ -23,8 +23,11 @@
     },
     {
       "files": ["*.ts", "*.tsx"],
-      "extends": ["plugin:@nrwl/nx/typescript"],
-      "rules": {}
+      "extends": ["plugin:@nrwl/nx/typescript", "standard-with-typescript"],
+      "rules": {},
+      "parserOptions": {
+        "project": "./tsconfig.base.json"
+      }
     },
     {
       "files": ["*.js", "*.jsx"],
