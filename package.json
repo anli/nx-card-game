@@ -3,12 +3,14 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "ios": "nx run-ios",
     "android": "nx run-android",
-    "start": "nx serve",
     "build": "nx build",
+    "ios": "nx run-ios",
     "lint": "nx affected:lint",
-    "test": "nx affected:test"
+    "start": "nx serve",
+    "test": "nx affected:test",
+    "test-coverage": "rm -rf coverage && npx nx run-many --all --target=test --configuration=coverage --skip-nx-cache && node tools/combine-coverage-final.js && nyc merge coverage coverage/combine-coverage/coverage.json && nyc report -t coverage/combine-coverage --report-dir coverage/combine-coverage --reporter=html --reporter=lcov",
+    "type-check": "nx affected --target=type-check"
   },
   "private": true,
   "devDependencies": {
@@ -48,6 +50,7 @@
     "metro": "0.67.0",
     "metro-react-native-babel-preset": "0.67.0",
     "metro-resolver": "0.67.0",
+    "nyc": "^15.1.0",
     "prettier": "^2.5.1",
     "react-native-config": "1.4.5",
     "react-native-svg": "12.1.1",

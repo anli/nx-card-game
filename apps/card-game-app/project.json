@@ -84,6 +84,14 @@
           "codeCoverage": true
         }
       }
+    },
+    "type-check": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "tsc -b",
+        "cwd": "apps/card-game-app"
+      }
     }
   },
   "tags": []

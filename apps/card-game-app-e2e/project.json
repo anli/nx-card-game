@@ -53,12 +53,26 @@
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
-        "lintFilePatterns": ["apps/card-game-app-e2e/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": [
+          "apps/card-game-app-e2e/**/*.{ts,tsx,js,jsx}"
+        ]
+      }
+    },
+    "type-check": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "tsc -b",
+        "cwd": "apps/card-game-app-e2e"
       }
     }
   },
   "tags": [],
-  "implicitDependencies": ["card-game-app"]
+  "implicitDependencies": [
+    "card-game-app"
+  ]
 }
