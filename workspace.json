@@ -1,4 +1,7 @@
 {
   "version": 2,
-  "projects": {}
+  "projects": {
+    "card-game-app": "apps/card-game-app",
+    "card-game-app-e2e": "apps/card-game-app-e2e"
+  }
 }
