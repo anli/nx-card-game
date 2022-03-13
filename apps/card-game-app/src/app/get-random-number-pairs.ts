@@ -11,6 +11,7 @@ const shuffle = <T>(array: T[]): T[] => {
 const getRandomNumbers = (length: number): number[] => {
   const numbers = new Set<number>()
   while (numbers.size !== length) {
+    crypto.getRandomValues(new Uint32Array(1))
     numbers.add(Math.floor(Math.random() * 100) + 1)
   }
 
