@@ -1,7 +1,7 @@
 import { Screen, Text, View } from '@nx-card-game/shared/ui'
 import React, { useState } from 'react'
 import { Alert, Pressable } from 'react-native'
-import { Card } from './card'
+import { ANIMATION_DURATION_MILLISECONDS, FlipCard } from './flip-card'
 import { getRandomNumberPairs } from './get-random-number-pairs'
 
 const INCORRECT_MATCH_DELAY_MILLISECONDS = 1000
@@ -33,8 +33,11 @@ export const GameScreen = ({
 
   const handleRestart = (): void => {
     setFlipCardIds([])
-    setCards(getCards())
     setSteps([])
+
+    setTimeout(() => {
+      setCards(getCards())
+    }, ANIMATION_DURATION_MILLISECONDS)
   }
 
   const handleBackCardPress = (id: number): void => {
@@ -54,11 +57,13 @@ export const GameScreen = ({
       }
 
       if (flipCardIds.length + 1 === cards.length) {
-        return Alert.alert(
-          'Congratulations',
-          `You win this game by ${steps.length + 1} steps!`,
-          [{ text: 'Try another round', onPress: handleRestart }]
-        )
+        setTimeout(() => {
+          Alert.alert(
+            'Congratulations',
+            `You win this game by ${steps.length + 1} steps!`,
+            [{ text: 'Try another round', onPress: handleRestart }]
+          )
+        }, ANIMATION_DURATION_MILLISECONDS)
       }
     }
   }
@@ -96,7 +101,7 @@ export const GameScreen = ({
           const isShown = flipCardIds.some((flipCardId) => flipCardId === id)
 
           return (
-            <Card
+            <FlipCard
               key={id}
               id={id}
               width={cardWidth / 3}
