@@ -1,11 +1,10 @@
-import * as tokens from '@shopify/polaris-tokens'
 import { createTheme } from '@shopify/restyle'
+import { tokens } from './tokens'
 
 const pxToNumber = (px: string): number => {
   return parseInt(px.replace('px', ''), 10)
 }
 
-// https://www.figma.com/file/QwZvryiWjvuE0nnBWBDUXn/Polaris-for-Admin%3A-Colors-(Community)?node-id=2989%3A136
 const base = {
   colors: {
     border: '',
@@ -40,19 +39,8 @@ const base = {
     phone: 0,
     tablet: 768
   },
-  textVariants: {
-    // https://github.com/hectahertz/react-native-typography/blob/master/src/collections/iOSUIKit.js
-    defaults: {
-      fontSize: 18,
-      color: 'text'
-    }
-  },
-  screenVariants: {
-    defaults: {
-      flex: 1,
-      backgroundColor: 'surface'
-    }
-  }
+  textVariants: {},
+  screenVariants: {}
 }
 
 export const baseTheme = createTheme({

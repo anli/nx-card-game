@@ -1,5 +1,5 @@
-import * as tokens from '@shopify/polaris-tokens'
 import { baseTheme, Theme } from './base'
+import { tokens } from './tokens'
 
 export const lightTheme: Theme = {
   ...baseTheme,
@@ -11,7 +11,7 @@ export const lightTheme: Theme = {
     success: tokens.colorGreen,
     warning: tokens.colorYellow,
     critical: tokens.colorRed,
-    primary: tokens.colorGreen,
+    primary: tokens.colorBlue,
     icon: tokens.colorBlack
   }
 }
