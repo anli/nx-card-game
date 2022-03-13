@@ -43,4 +43,18 @@ describe('Given I am at Game Screen', () => {
 
     expect(await queryAllByTestId('CardFront')).toHaveLength(1)
   })
+
+  it('And I have Cards Front, When I press Restart Button, Then I should not see Card Front', async () => {
+    const { getByText, getAllByTestId, queryAllByTestId } = render(<App />)
+
+    fireEvent.press(getAllByTestId('CardBack')[0])
+    fireEvent.press(getAllByTestId('CardBack')[0])
+    fireEvent.press(getAllByTestId('CardBack')[0])
+    expect(await queryAllByTestId('CardFront')).toHaveLength(3)
+
+    fireEvent.press(getByText('Restart'))
+
+    expect(await queryAllByTestId('CardFront')).toHaveLength(0)
+    expect(await queryAllByTestId('CardBack')).toHaveLength(12)
+  })
 })
