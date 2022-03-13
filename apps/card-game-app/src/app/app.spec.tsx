@@ -14,7 +14,7 @@ describe('Given I am at Game Screen', () => {
     expect(getAllByTestId('Card')).toHaveLength(12)
   })
 
-  it('When device screen size changes, Then I should see Cards resized', async () => {
+  it('When I change device screen size, Then I should see Cards resized', () => {
     const { getByTestId, getAllByTestId } = render(<App />)
     const cardsHeight = 400
     const cardsWidth = 400
@@ -32,5 +32,15 @@ describe('Given I am at Game Screen', () => {
       width: cardsWidth / 3,
       height: cardsHeight / 4
     })
+  })
+
+  it('When I press Card Back, Then I should see Card Front', async () => {
+    const { getAllByTestId, queryAllByTestId } = render(<App />)
+
+    expect(await queryAllByTestId('CardFront')).toHaveLength(0)
+
+    fireEvent.press(getAllByTestId('CardBack')[0])
+
+    expect(await queryAllByTestId('CardFront')).toHaveLength(1)
   })
 })

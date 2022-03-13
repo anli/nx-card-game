@@ -24,7 +24,9 @@
     {
       "files": ["*.ts", "*.tsx"],
       "extends": ["plugin:@nrwl/nx/typescript", "standard-with-typescript"],
-      "rules": {},
+      "rules": {
+        "multiline-ternary": "off"
+      },
       "parserOptions": {
         "project": "./tsconfig.base.json"
       }

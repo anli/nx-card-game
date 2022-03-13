@@ -1,14 +1,21 @@
 import { Screen, Text, ThemeProvider, View } from '@nx-card-game/shared/ui'
 import React, { useState } from 'react'
 import { Pressable } from 'react-native'
+import { Card } from './card'
+import { getRandomNumberPairs } from './get-random-number-pairs'
 
-const cards = Array.from({ length: 12 }, (_, k) => {
-  return { id: k }
+const cards = getRandomNumberPairs(6).map((value, index) => {
+  return { id: index, value }
 })
 
 const GameScreen = (): React.ReactElement => {
   const [cardHeight, setCardHeight] = useState(0)
   const [cardWidth, setCardWidth] = useState(0)
+  const [flipCardIds, setFlipCardIds] = useState<number[]>([])
+
+  const handleBackCardPress = (id: number): void => {
+    setFlipCardIds([...flipCardIds, id])
+  }
 
   return (
     <Screen backgroundColor="surface" flex={1}>
@@ -39,27 +46,21 @@ const GameScreen = (): React.ReactElement => {
           setCardHeight(ev.nativeEvent.layout.height)
           setCardWidth(ev.nativeEvent.layout.width)
         }}>
-        {cards.map(({ id }) => (
-          <View
-            testID="Card"
-            key={id}
-            width={cardWidth / 3}
-            height={cardHeight / 4}
-            padding="extraTight">
-            <View
-              flex={1}
-              backgroundColor="primary"
-              borderColor="border"
-              borderWidth={4}
-              borderRadius="baseTight"
-              alignItems="center"
-              justifyContent="center">
-              <Text color="text" fontSize={40}>
-                ?
-              </Text>
-            </View>
-          </View>
-        ))}
+        {cards.map(({ id, value }) => {
+          const isShown = flipCardIds.some((flipCardId) => flipCardId === id)
+
+          return (
+            <Card
+              key={id}
+              id={id}
+              width={cardWidth / 3}
+              height={cardHeight / 4}
+              isShown={isShown}
+              value={value}
+              onBackPress={handleBackCardPress}
+            />
+          )
+        })}
       </View>
     </Screen>
   )
