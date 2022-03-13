@@ -4,11 +4,13 @@ import { Pressable } from 'react-native'
 import { Card } from './card'
 import { getRandomNumberPairs } from './get-random-number-pairs'
 
-const cards = getRandomNumberPairs(6).map((value, index) => {
-  return { id: index, value }
-})
+const getCards = (): Array<{ id: number, value: number }> =>
+  getRandomNumberPairs(6).map((value, index) => {
+    return { id: index, value }
+  })
 
 const GameScreen = (): React.ReactElement => {
+  const [cards, setCards] = useState(getCards())
   const [cardHeight, setCardHeight] = useState(0)
   const [cardWidth, setCardWidth] = useState(0)
   const [flipCardIds, setFlipCardIds] = useState<number[]>([])
@@ -17,10 +19,15 @@ const GameScreen = (): React.ReactElement => {
     setFlipCardIds([...flipCardIds, id])
   }
 
+  const handleRestart = (): void => {
+    setFlipCardIds([])
+    setCards(getCards())
+  }
+
   return (
     <Screen backgroundColor="surface" flex={1}>
       <View flexDirection="row" justifyContent="space-between">
-        <Pressable>
+        <Pressable onPress={handleRestart}>
           <View padding="base">
             <Text color="primary" fontSize={20} fontWeight="bold">
               Restart
