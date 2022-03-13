@@ -2,6 +2,7 @@
   "version": 2,
   "projects": {
     "card-game-app": "apps/card-game-app",
-    "card-game-app-e2e": "apps/card-game-app-e2e"
+    "card-game-app-e2e": "apps/card-game-app-e2e",
+    "shared-ui": "libs/shared/ui"
   }
 }

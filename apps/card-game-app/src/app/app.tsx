@@ -1,12 +1,18 @@
+import { Screen, Text, ThemeProvider, View } from '@nx-card-game/shared/ui'
 import React from 'react'
-import { SafeAreaView, Text } from 'react-native'
 
-const App = (): JSX.Element => {
+const GameScreen = (): React.ReactElement => {
   return (
-    <SafeAreaView>
-      <Text>Welcome</Text>
-    </SafeAreaView>
+    <Screen>
+      <View>
+        <Text>Welcome</Text>
+      </View>
+    </Screen>
   )
 }
 
-export default App
+export const App = (): React.ReactElement => (
+  <ThemeProvider>
+    <GameScreen />
+  </ThemeProvider>
+)
