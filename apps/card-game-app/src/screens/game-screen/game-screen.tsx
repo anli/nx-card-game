@@ -1,6 +1,6 @@
 import { Screen, Text, View } from '@nx-card-game/shared/ui'
 import React, { useState } from 'react'
-import { Pressable } from 'react-native'
+import { Alert, Pressable } from 'react-native'
 import { Card } from './card'
 import { getRandomNumberPairs } from './get-random-number-pairs'
 
@@ -31,6 +31,12 @@ export const GameScreen = ({
   const [flipCardIds, setFlipCardIds] = useState<number[]>(defaultFlipCardIds)
   const [steps, setSteps] = useState<number[]>([])
 
+  const handleRestart = (): void => {
+    setFlipCardIds([])
+    setCards(getCards())
+    setSteps([])
+  }
+
   const handleBackCardPress = (id: number): void => {
     setSteps([...steps, id])
     setFlipCardIds([...flipCardIds, id])
@@ -44,14 +50,17 @@ export const GameScreen = ({
         setTimeout(() => {
           setFlipCardIds(flipCardIds.slice(0, -1))
         }, INCORRECT_MATCH_DELAY_MILLISECONDS)
+        return
+      }
+
+      if (flipCardIds.length + 1 === cards.length) {
+        return Alert.alert(
+          'Congratulations',
+          `You win this game by ${steps.length + 1} steps!`,
+          [{ text: 'Try another round', onPress: handleRestart }]
+        )
       }
     }
-  }
-
-  const handleRestart = (): void => {
-    setFlipCardIds([])
-    setCards(getCards())
-    setSteps([])
   }
 
   return (
