@@ -5,6 +5,10 @@
   "scripts": {
     "android": "nx run-android",
     "build": "nx build",
+    "e2e-build-ios": "nx affected --target=e2e-build-ios",
+    "e2e-test-ios": "nx affected --target=e2e-test-ios",
+    "e2e-build-android": "nx affected --target=e2e-build-android",
+    "e2e-test-android": "nx affected --target=e2e-test-android",
     "ios": "nx run-ios",
     "lint": "nx affected:lint",
     "pod-install": "nx affected --target=pod-install",
@@ -71,6 +75,7 @@
     "react": "17.0.2",
     "react-native": "0.67.2",
     "react-native-reanimated": "^2.4.1",
+    "react-native-safe-area-context": "^3.1.9",
     "tslib": "^2.0.0"
   },
   "resolutions": {
