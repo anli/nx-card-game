@@ -12,6 +12,7 @@
     "@react-native-async-storage/async-storage": "*",
     "@shopify/restyle": "*",
     "@shopify/polaris-tokens": "*",
-    "react-native-reanimated": "*"
+    "react-native-reanimated": "*",
+    "@welldone-software/why-did-you-render": "*"
   }
 }

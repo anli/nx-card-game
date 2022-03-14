@@ -1,5 +1,5 @@
 import { Text, View } from '@nx-card-game/shared/ui'
-import React from 'react'
+import React, { useCallback } from 'react'
 import { Pressable } from 'react-native'
 import Animated, {
   Easing,
@@ -117,36 +117,41 @@ interface FlipCardProps {
   onBackPress: (id: number) => void
 }
 
-export const FlipCard = ({
-  id,
-  width,
-  height,
-  isShown,
-  value,
-  onBackPress
-}: FlipCardProps): JSX.Element => {
-  const { front, back } = useFlipAnimatedStyle(isShown ? 1 : 0)
+export const FlipCard = React.memo(
+  ({
+    id,
+    width,
+    height,
+    isShown,
+    value,
+    onBackPress
+  }: FlipCardProps): JSX.Element => {
+    const { front, back } = useFlipAnimatedStyle(isShown ? 1 : 0)
 
-  const handlePress = (): void => {
-    !isShown && onBackPress(id)
+    const handlePress = useCallback((): void => {
+      !isShown && onBackPress(id)
+    }, [onBackPress, isShown, id])
+
+    return (
+      <Pressable
+        onPress={handlePress}
+        testID="FlipCard"
+        style={{ width, height, padding: 4 }}>
+        <Animated.View testID={isShown ? 'FlipCardFront' : 'FlipCardBack'}>
+          <Animated.View
+            style={[
+              { position: 'absolute', width, height, padding: 4 },
+              front
+            ]}>
+            <CardFront value={value} />
+          </Animated.View>
+
+          <Animated.View
+            style={[{ position: 'absolute', width, height, padding: 4 }, back]}>
+            <CardBack />
+          </Animated.View>
+        </Animated.View>
+      </Pressable>
+    )
   }
-
-  return (
-    <Pressable
-      onPress={handlePress}
-      testID="FlipCard"
-      style={{ width, height, padding: 4 }}>
-      <Animated.View testID={isShown ? 'FlipCardFront' : 'FlipCardBack'}>
-        <Animated.View
-          style={[{ position: 'absolute', width, height, padding: 4 }, front]}>
-          <CardFront value={value} />
-        </Animated.View>
-
-        <Animated.View
-          style={[{ position: 'absolute', width, height, padding: 4 }, back]}>
-          <CardBack />
-        </Animated.View>
-      </Animated.View>
-    </Pressable>
-  )
-}
+)
