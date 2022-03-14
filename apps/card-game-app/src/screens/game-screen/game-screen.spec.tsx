@@ -1,8 +1,8 @@
+import { render } from '@nx-card-game/shared/utils-testing'
 import { act, fireEvent, waitFor } from '@testing-library/react-native'
 import React from 'react'
 import { Alert, AlertButton } from 'react-native'
 import { GameScreen } from './game-screen'
-import { render } from './render'
 
 const defaultCards = Array.from({ length: 12 }, (_, k) => ({
   id: k,
@@ -138,6 +138,20 @@ describe('Given I am at Game Screen', () => {
     void act(() => jest.runAllTimers())
 
     expect(getByTestId('StepCounter')).toHaveTextContent('0')
+    jest.useRealTimers()
+  })
+
+  it('And I have 1 Card flipped open, And I flip an incorrect card, When I press another Card before the flip back animation, Then I should not see that Card flip', () => {
+    jest.useFakeTimers()
+    const { queryAllByTestId, getAllByTestId } = render(
+      <GameScreen {...oneCardOpenMocks} />
+    )
+    fireEvent.press(getAllByTestId('FlipCard')[2])
+    expect(queryAllByTestId('FlipCardFront')).toHaveLength(2)
+
+    fireEvent.press(getAllByTestId('FlipCard')[3])
+
+    expect(queryAllByTestId('FlipCardFront')).toHaveLength(2)
     jest.useRealTimers()
   })
 })

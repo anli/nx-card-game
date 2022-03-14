@@ -3,6 +3,10 @@
   "projects": {
     "card-game-app": "apps/card-game-app",
     "card-game-app-e2e": "apps/card-game-app-e2e",
-    "shared-ui": "libs/shared/ui"
+    "card-game-feature": "libs/card-game/feature",
+    "card-game-ui": "libs/card-game/ui",
+    "card-game-utils": "libs/card-game/utils",
+    "shared-ui": "libs/shared/ui",
+    "shared-utils-testing": "libs/shared/utils-testing"
   }
 }

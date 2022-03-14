@@ -16,7 +16,15 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@nx-card-game/shared/ui": ["libs/shared/ui/src/index.ts"]
+      "@nx-card-game/card-game/feature": [
+        "libs/card-game/feature/src/index.ts"
+      ],
+      "@nx-card-game/card-game/ui": ["libs/card-game/ui/src/index.ts"],
+      "@nx-card-game/card-game/utils": ["libs/card-game/utils/src/index.ts"],
+      "@nx-card-game/shared/ui": ["libs/shared/ui/src/index.ts"],
+      "@nx-card-game/shared/utils-testing": [
+        "libs/shared/utils-testing/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]
