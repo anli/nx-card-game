@@ -3,7 +3,7 @@
   "sourceRoot": "apps/card-game-app-e2e/src",
   "projectType": "application",
   "targets": {
-    "build-ios": {
+    "e2e-build-ios": {
       "executor": "@nrwl/detox:build",
       "options": {
         "detoxConfiguration": "ios.sim.debug"
@@ -14,20 +14,23 @@
         }
       }
     },
-    "test-ios": {
+    "e2e-test-ios": {
       "executor": "@nrwl/detox:test",
       "options": {
         "detoxConfiguration": "ios.sim.debug",
-        "buildTarget": "card-game-app-e2e:build-ios"
+        "buildTarget": "card-game-app-e2e:e2e-build-ios"
       },
       "configurations": {
         "production": {
+          "loglevel": "verbose",
+          "artifactsLocation": "./../../artifacts/",
+          "recordVideos": "failing",
           "detoxConfiguration": "ios.sim.release",
-          "buildTarget": "card-game-app-e2e:build-ios:prod"
+          "buildTarget": "card-game-app-e2e:e2e-build-ios:prod"
         }
       }
     },
-    "build-android": {
+    "e2e-build-android": {
       "executor": "@nrwl/detox:build",
       "options": {
         "detoxConfiguration": "android.emu.debug"
@@ -38,16 +41,19 @@
         }
       }
     },
-    "test-android": {
+    "e2e-test-android": {
       "executor": "@nrwl/detox:test",
       "options": {
         "detoxConfiguration": "android.emu.debug",
-        "buildTarget": "card-game-app-e2e:build-android"
+        "buildTarget": "card-game-app-e2e:e2e-build-android"
       },
       "configurations": {
         "production": {
+          "loglevel": "verbose",
+          "artifactsLocation": "./../../artifacts/",
+          "recordVideos": "failing",
           "detoxConfiguration": "android.emu.release",
-          "buildTarget": "card-game-app-e2e:build-android:prod"
+          "buildTarget": "card-game-app-e2e:e2e-build-android:prod"
         }
       }
     },
