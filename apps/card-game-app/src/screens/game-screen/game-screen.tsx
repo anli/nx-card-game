@@ -1,21 +1,18 @@
+import { CardProps, getCards, useGame } from '@nx-card-game/card-game/feature'
+import {
+  ANIMATION_DURATION_MILLISECONDS,
+  FlipCard,
+  GameHeader
+} from '@nx-card-game/card-game/ui'
 import { Screen, View } from '@nx-card-game/shared/ui'
 import React, { useCallback, useState } from 'react'
 import { Alert } from 'react-native'
-import { ANIMATION_DURATION_MILLISECONDS, FlipCard } from './flip-card'
-import { GameHeader } from './game-header'
-import { getRandomNumberPairs } from './get-random-number-pairs'
+import { useCardDimensions } from './use-card-dimensions'
 
 const INCORRECT_MATCH_DELAY_MILLISECONDS = 1000
-
-interface CardProps {
-  id: number
-  value: number
-}
-
-const getCards = (): CardProps[] =>
-  getRandomNumberPairs(6).map((value, index) => {
-    return { id: index, value }
-  })
+const CARD_PAIRS_VALUE = 6
+const MemoFlipCard = React.memo(FlipCard)
+const MemoGameHeader = React.memo(GameHeader)
 
 interface GameScreenProps {
   defaultFlipCardIds?: number[]
@@ -23,58 +20,64 @@ interface GameScreenProps {
 }
 
 export const GameScreen = ({
-  defaultCards = getCards(),
+  defaultCards = getCards(CARD_PAIRS_VALUE),
   defaultFlipCardIds = []
 }: GameScreenProps): React.ReactElement => {
-  const [cards, setCards] = useState(defaultCards)
-  const [cardHeight, setCardHeight] = useState(0)
-  const [cardWidth, setCardWidth] = useState(0)
-  const [flipCardIds, setFlipCardIds] = useState<number[]>(defaultFlipCardIds)
-  const [steps, setSteps] = useState<number[]>([])
+  const [pendingAnimation, setPendingAnimation] = useState(false)
+  const {
+    cards,
+    steps,
+    flipCardIds,
+    resetSteps,
+    resetCards,
+    addStep,
+    flipBackLatestPair
+  } = useGame(defaultCards, defaultFlipCardIds)
+  const { width: cardWidth, height: cardHeight, onLayout } = useCardDimensions()
 
   const handleRestart = useCallback((): void => {
-    setFlipCardIds([])
-    setSteps([])
+    resetSteps()
 
     setTimeout(() => {
-      setCards(getCards())
+      resetCards(getCards(CARD_PAIRS_VALUE))
     }, ANIMATION_DURATION_MILLISECONDS)
-  }, [])
+  }, [resetSteps, resetCards])
 
   const handleBackCardPress = useCallback(
     (id: number): void => {
-      setSteps([...steps, id])
-      setFlipCardIds([...flipCardIds, id])
+      if (!pendingAnimation) {
+        setPendingAnimation(true)
+        const gameState = addStep(id)
 
-      if (flipCardIds.length > 0 && flipCardIds.length % 2 !== 0) {
-        const [previousCardId] = flipCardIds.slice(-1)
-        const { value: previousCardValue } = cards[previousCardId]
-        const { value: currentCardValue } = cards[id]
+        switch (gameState) {
+          case 'BOTH_CARD_INCORRECT':
+            setTimeout(() => {
+              flipBackLatestPair()
+              setPendingAnimation(false)
+            }, INCORRECT_MATCH_DELAY_MILLISECONDS)
+            break
 
-        if (previousCardValue !== currentCardValue) {
-          setTimeout(() => {
-            setFlipCardIds(flipCardIds.slice(0, -1))
-          }, INCORRECT_MATCH_DELAY_MILLISECONDS)
-          return
-        }
-
-        if (flipCardIds.length + 1 === cards.length) {
-          setTimeout(() => {
-            Alert.alert(
-              'Congratulations',
-              `You win this game by ${steps.length + 1} steps!`,
-              [{ text: 'Try another round', onPress: handleRestart }]
-            )
-          }, ANIMATION_DURATION_MILLISECONDS)
+          case 'GAME_ENDED':
+            setTimeout(() => {
+              Alert.alert(
+                'Congratulations',
+                `You win this game by ${steps.length + 1} steps!`,
+                [{ text: 'Try another round', onPress: handleRestart }]
+              )
+              setPendingAnimation(false)
+            }, ANIMATION_DURATION_MILLISECONDS)
+            break
+          default:
+            setPendingAnimation(false)
         }
       }
     },
-    [cards, flipCardIds, steps, handleRestart]
+    [addStep, flipBackLatestPair, steps.length, handleRestart, pendingAnimation]
   )
 
   return (
     <Screen backgroundColor="surface" flex={1} testID="GameScreen">
-      <GameHeader
+      <MemoGameHeader
         onRestartPress={handleRestart}
         buttonTitle="Restart"
         stepLabel="STEPS:"
@@ -83,21 +86,19 @@ export const GameScreen = ({
       <View
         testID="Cards"
         flex={1}
+        alignItems="center"
         flexDirection="row"
         flexWrap="wrap"
-        onLayout={(ev) => {
-          setCardHeight(ev.nativeEvent.layout.height)
-          setCardWidth(ev.nativeEvent.layout.width)
-        }}>
+        onLayout={onLayout}>
         {cards.map(({ id, value }) => {
           const isShown = flipCardIds.some((flipCardId) => flipCardId === id)
 
           return (
-            <FlipCard
+            <MemoFlipCard
               key={id}
               id={id}
-              width={cardWidth / 3}
-              height={cardHeight / 4}
+              width={cardWidth}
+              height={cardHeight}
               isShown={isShown}
               value={value}
               onBackPress={handleBackCardPress}

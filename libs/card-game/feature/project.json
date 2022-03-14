@@ -1,0 +1,43 @@
+{
+  "root": "libs/card-game/feature",
+  "sourceRoot": "libs/card-game/feature/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "libs/card-game/feature/**/*.{ts,tsx,js,jsx}"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "coverage/libs/card-game/feature"
+      ],
+      "options": {
+        "coverageDirectory": "coverage/libs-card-game-feature",
+        "jestConfig": "libs/card-game/feature/jest.config.js",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "coverage": {
+          "codeCoverage": true
+        }
+      }
+    },
+    "type-check": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "tsc -b",
+        "cwd": "libs/card-game/feature"
+      }
+    }
+  }
+}

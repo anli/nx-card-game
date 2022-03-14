@@ -13,6 +13,7 @@
     "@shopify/restyle": "*",
     "@shopify/polaris-tokens": "*",
     "react-native-reanimated": "*",
-    "@welldone-software/why-did-you-render": "*"
+    "@welldone-software/why-did-you-render": "*",
+    "react-native-safe-area-context": "*"
   }
 }
