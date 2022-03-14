@@ -1,7 +1,7 @@
-import { Text, View } from '@nx-card-game/shared/ui'
+import { AnimatedView, Text, View } from '@nx-card-game/shared/ui'
 import React, { useCallback } from 'react'
 import { Pressable } from 'react-native'
-import Animated, {
+import {
   Easing,
   interpolate,
   useAnimatedStyle,
@@ -49,20 +49,20 @@ const CardFront = ({ value }: { value: number }): JSX.Element => (
 
 const useFlipAnimatedStyle = (
   side: 0 | 1
-): {
-  front: {
+): [
+  {
+    opacity: number
+    transform: Array<{
+      rotateY: string
+    }>
+  },
+  {
     opacity: number
     transform: Array<{
       rotateY: string
     }>
   }
-  back: {
-    opacity: number
-    transform: Array<{
-      rotateY: string
-    }>
-  }
-} => {
+] => {
   const rotatePosition = interpolate(side, [0, 1], [180, 360])
   const rotateValue = useDerivedValue(() =>
     withTiming(rotatePosition, ANIMATION_TIMING_CONFIG)
@@ -87,14 +87,14 @@ const useFlipAnimatedStyle = (
     () => withTiming(side === 0 ? 1 : 0, ANIMATION_TIMING_CONFIG),
     [side]
   )
-  const front = useAnimatedStyle(
+  const frontStyle = useAnimatedStyle(
     () => ({
       opacity: opacityFront.value,
       transform: [{ ...rotationFront.value }]
     }),
     [opacityFront, rotationFront]
   )
-  const back = useAnimatedStyle(
+  const backStyle = useAnimatedStyle(
     () => ({
       opacity: opacityBack.value,
       transform: [{ ...rotationBack.value }, { ...rotationFront.value }]
@@ -102,10 +102,7 @@ const useFlipAnimatedStyle = (
     [opacityBack, rotationBack]
   )
 
-  return {
-    front,
-    back
-  }
+  return [frontStyle, backStyle]
 }
 
 interface FlipCardProps {
@@ -126,31 +123,35 @@ export const FlipCard = React.memo(
     value,
     onBackPress
   }: FlipCardProps): JSX.Element => {
-    const { front, back } = useFlipAnimatedStyle(isShown ? 1 : 0)
+    const [frontStyle, backStyle] = useFlipAnimatedStyle(isShown ? 1 : 0)
 
     const handlePress = useCallback((): void => {
       !isShown && onBackPress(id)
     }, [onBackPress, isShown, id])
 
     return (
-      <Pressable
-        onPress={handlePress}
-        testID="FlipCard"
-        style={{ width, height, padding: 4 }}>
-        <Animated.View testID={isShown ? 'FlipCardFront' : 'FlipCardBack'}>
-          <Animated.View
-            style={[
-              { position: 'absolute', width, height, padding: 4 },
-              front
-            ]}>
+      <Pressable onPress={handlePress} testID="FlipCard">
+        <AnimatedView
+          width={width}
+          height={height}
+          padding="extraTight"
+          testID={isShown ? 'FlipCardFront' : 'FlipCardBack'}>
+          <AnimatedView
+            position="absolute"
+            width="100%"
+            height="100%"
+            style={[frontStyle]}>
             <CardFront value={value} />
-          </Animated.View>
+          </AnimatedView>
 
-          <Animated.View
-            style={[{ position: 'absolute', width, height, padding: 4 }, back]}>
+          <AnimatedView
+            position="absolute"
+            width="100%"
+            height="100%"
+            style={[backStyle]}>
             <CardBack />
-          </Animated.View>
-        </Animated.View>
+          </AnimatedView>
+        </AnimatedView>
       </Pressable>
     )
   }

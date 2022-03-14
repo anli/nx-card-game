@@ -40,7 +40,8 @@ const base = {
     tablet: 768
   },
   textVariants: {},
-  screenVariants: {}
+  screenVariants: {},
+  viewVariants: {}
 }
 
 export const baseTheme = createTheme({

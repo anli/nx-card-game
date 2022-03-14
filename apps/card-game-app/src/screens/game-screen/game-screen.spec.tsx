@@ -47,7 +47,7 @@ describe('Given I am at Game Screen', () => {
       }
     })
 
-    expect(getAllByTestId('FlipCard')[0]).toHaveStyle({
+    expect(getAllByTestId('FlipCardBack')[0]).toHaveStyle({
       width: cardsWidth / 3,
       height: cardsHeight / 4
     })
