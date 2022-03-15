@@ -1,94 +1,115 @@
+# React Native Card Game
 
+Card Game Mobile App build with [React Native](https://reactnative.dev/) and [NX monorepo](https://nx.dev/)
 
-# NxCardGame
+## Run the App
 
-This project was generated using [Nx](https://nx.dev).
+Install packages
 
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
+```
+npm ci
+```
 
-🔎 **Smart, Fast and Extensible Build System**
+Run on Android
 
-## Adding capabilities to your workspace
+```
+npm run android
+```
 
-Nx supports many plugins which add capabilities for developing different types of applications and different tools.
+Run on iOS
 
-These capabilities include generating applications, libraries, etc as well as the devtools to test, and build projects as well.
+```
+npm run ios
+```
 
-Below are our core plugins:
+Run e2e tests with Detox
 
-- [React](https://reactjs.org)
-  - `npm install --save-dev @nrwl/react`
-- Web (no framework frontends)
-  - `npm install --save-dev @nrwl/web`
-- [Angular](https://angular.io)
-  - `npm install --save-dev @nrwl/angular`
-- [Nest](https://nestjs.com)
-  - `npm install --save-dev @nrwl/nest`
-- [Express](https://expressjs.com)
-  - `npm install --save-dev @nrwl/express`
-- [Node](https://nodejs.org)
-  - `npm install --save-dev @nrwl/node`
+```
+npm run start
 
-There are also many [community plugins](https://nx.dev/community) you could add.
+# android
+# update .env E2E_ANDROID_SIMULATOR with your emulator name
+# in another terminal
+npm run e2e-test-android
 
-## Generate an application
+# ios needs signing certificate
+# not working for now
+npm run e2e-test-ios
+```
 
-Run `nx g @nrwl/react:app my-app` to generate an application.
+Run unit tests
 
-> You can use any of the plugins above to generate applications as well.
+```
+# run on all modules, and do not use caching
+npm run test -- --all --skip-nx-cache
+```
 
-When using Nx, you can create multiple applications and libraries in the same workspace.
+Run test coverage checks
 
-## Generate a library
+```
+npm run test-coverage
 
-Run `nx g @nrwl/react:lib my-lib` to generate a library.
+# open coverage report if needed
+open coverage/combine-coverage/index.html
+```
 
-> You can also use any of the plugins above to generate libraries as well.
+Run linting
 
-Libraries are shareable across libraries and applications. They can be imported from `@nx-card-game/mylib`.
+```
+# run on all modules, and do not use caching
+npm run lint -- --all --skip-nx-cache
+```
 
-## Development server
+Run type checking
 
-Run `nx serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
+```
+npm run type-check -- --all --skip-nx-cache
+```
 
-## Code scaffolding
+## Key File and Folder Architecture
 
-Run `nx g @nrwl/react:component my-component --project=my-app` to generate a new component.
+```
+.github                                 // CI scripts
+apps
+├──card-game-app
+│   └──src
+│      ├──app                           // portal app
+│      └──screens
+│         └──game-screen                // portal game
+└──card-game-app-e2e
+    └──src/app.spec.ts                  // e2e test files
+coverage                                // unit test coverage files
+libs
+├──card-game                            // card game specific libraries
+│  ├──feature
+│  │    └──src/game                     // game business logics
+│  ├──ui                                // game UI components
+│  │  └──src
+│  │      ├──flip-card
+│  │      └──game-header
+│  └──utils
+│     └──src/get-random-number-pairs
+└──shared                               // store reusable libraries across different scope
+   ├──ui
+   │  └──src
+   │     ├──components                  // generic UI components
+   │     ├──themes                      // theming files
+   │     └──utils
+   └──utils-testing                     // unit tests helpers
+tools                                   // custom scripts
+└──combine-coverage-final.js
+.env                                    // environment variables
+...
+```
 
-## Build
+## Key Technology Stack or Libraries
 
-Run `nx build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `nx test my-app` to execute the unit tests via [Jest](https://jestjs.io).
-
-Run `nx affected:test` to execute the unit tests affected by a change.
-
-## Running end-to-end tests
-
-Run `nx e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
-
-Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
-
-## Understand your workspace
-
-Run `nx graph` to see a diagram of the dependencies of your projects.
-
-## Further help
-
-Visit the [Nx Documentation](https://nx.dev) to learn more.
-
-
-
-## ☁ Nx Cloud
-
-### Distributed Computation Caching & Distributed Task Execution
-
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-cloud-card.png"></p>
-
-Nx Cloud pairs with Nx in order to enable you to build and test code more rapidly, by up to 10 times. Even teams that are new to Nx can connect to Nx Cloud and start saving time instantly.
-
-Teams using Nx gain the advantage of building full-stack applications with their preferred framework alongside Nx’s advanced code generation and project dependency graph, plus a unified experience for both frontend and backend developers.
-
-Visit [Nx Cloud](https://nx.app/) to learn more.
+- [NX monorepo](https://nx.dev/): Smart, Fast and Extensible Build System for monorepo
+- [react native testing library](https://callstack.github.io/react-native-testing-library/): React Native testing utilities that encourage good testing practices
+- [Typescript](https://www.typescriptlang.org/): Strongly typed programming language that builds on JavaScript
+- [Standard JS](https://standardjs.com/): Enforce consistent style for code clarity and conventions
+- [Restyle](https://github.com/Shopify/restyle): A type-enforced system for building UI components in React Native with TypeScript
+- [React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/docs/): Allows for creating smooth animations and interactions that runs on the UI thread.
+- [why did you render](https://github.com/welldone-software/why-did-you-render): Detect potentially avoidable re-renders.
+- [Sonar Cloud](https://sonarcloud.io/): Feedback on Code Quality and Code Security
+- [Detox](https://github.com/wix/Detox): Gray box end-to-end testing and automation framework
